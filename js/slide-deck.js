@@ -66,19 +66,6 @@ SlideDeck.prototype.onDomLoaded_ = function(e) {
   document.body.classList.add('loaded'); // Add loaded class for templates to use.
 
   this.slides = this.container.querySelectorAll('slide:not([hidden]):not(.backdrop)');
-
-  // If we're on a smartphone, apply special sauce.
-  if (Modernizr.mq('only screen and (max-device-width: 480px)')) {
-    // var style = document.createElement('link');
-    // style.rel = 'stylesheet';
-    // style.type = 'text/css';
-    // style.href = this.CSS_DIR_ + 'phone.css';
-    // document.querySelector('head').appendChild(style);
-
-    // No need for widescreen layout on a phone.
-    this.container.classList.remove('layout-widescreen');
-  }
-
   this.loadConfig_(SLIDE_CONFIG);
   this.addEventListeners_();
   this.updateSlides_();
@@ -103,12 +90,13 @@ SlideDeck.prototype.onDomLoaded_ = function(e) {
   // Note: this needs to come after addEventListeners_(), which adds a
   // 'keydown' listener that this controller relies on.
   // Also, no need to set this up if we're on mobile.
-  if (!Modernizr.touch) {
+  /*if (!Modernizr.touch) {
     this.controller = new SlideController(this);
     if (this.controller.isPopup) {
       document.body.classList.add('popup');
     }
   }
+  */
 };
 
 /**
@@ -118,34 +106,6 @@ SlideDeck.prototype.addEventListeners_ = function() {
   document.addEventListener('keydown', this.onBodyKeyDown_.bind(this), false);
   window.addEventListener('popstate', this.onPopState_.bind(this), false);
 
-  // var transEndEventNames = {
-  //   'WebkitTransition': 'webkitTransitionEnd',
-  //   'MozTransition': 'transitionend',
-  //   'OTransition': 'oTransitionEnd',
-  //   'msTransition': 'MSTransitionEnd',
-  //   'transition': 'transitionend'
-  // };
-  // 
-  // // Find the correct transitionEnd vendor prefix.
-  // window.transEndEventName = transEndEventNames[
-  //     Modernizr.prefixed('transition')];
-  // 
-  // // When slides are done transitioning, kickoff loading iframes.
-  // // Note: we're only looking at a single transition (on the slide). This
-  // // doesn't include autobuilds the slides may have. Also, if the slide
-  // // transitions on multiple properties (e.g. not just 'all'), this doesn't
-  // // handle that case.
-  // this.container.addEventListener(transEndEventName, function(e) {
-  //     this.enableSlideFrames_(this.curSlide_);
-  // }.bind(this), false);
-
-  // document.addEventListener('slideenter', function(e) {
-  //   var slide = e.target;
-  //   window.setTimeout(function() {
-  //     this.enableSlideFrames_(e.slideNumber);
-  //     this.enableSlideFrames_(e.slideNumber + 1);
-  //   }.bind(this), 300);
-  // }.bind(this), false);
 };
 
 /**
@@ -301,10 +261,6 @@ SlideDeck.prototype.loadConfig_ = function(config) {
     prettyPrint();
   }
 
-  if (settings.analytics) {
-    this.loadAnalytics_();
-  }
-
   if (settings.fonts) {
     this.addFonts_(settings.fonts);
   }
@@ -375,7 +331,7 @@ SlideDeck.prototype.loadConfig_ = function(config) {
   }
 
   /* Left/Right tap areas. Default to including. */
-  if (!!!('enableSlideAreas' in settings) || settings.enableSlideAreas) {
+/*  if (!!!('enableSlideAreas' in settings) || settings.enableSlideAreas) {
     var el = document.createElement('div');
     el.classList.add('slide-area');
     el.id = 'prev-slide-area';
@@ -388,8 +344,8 @@ SlideDeck.prototype.loadConfig_ = function(config) {
     el.addEventListener('click', this.nextSlide.bind(this), false);
     this.container.appendChild(el);
   }
-
-  if (Modernizr.touch && (!!!('enableTouch' in settings) ||
+*/
+/*  if (Modernizr.touch && (!!!('enableTouch' in settings) ||
       settings.enableTouch)) {
     var self = this;
 
@@ -407,7 +363,9 @@ SlideDeck.prototype.loadConfig_ = function(config) {
         self.nextSlide();
       }
     };
+    * 
   }
+  */
 };
 
 /**
@@ -745,20 +703,6 @@ SlideDeck.prototype.loadTheme_ = function(theme) {
   }
 };
 
-/**
- * @private
- */
-SlideDeck.prototype.loadAnalytics_ = function() {
-  var _gaq = window['_gaq'] || [];
-  _gaq.push(['_setAccount', this.config_.settings.analytics]);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-};
 
 
 // Polyfill missing APIs (if we need to), then create the slide deck.
