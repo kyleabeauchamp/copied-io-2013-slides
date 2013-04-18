@@ -6,10 +6,33 @@ class: image
 
 ---
 
-title: Segue Slide
+title: 
+class: big
+
+---
+
+title: title
 subtitle: Subtitle
 class: segue dark nobackground
 
+---
+  <slide>
+    <hgroup>
+      <h2>This slide was input as HTML</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
+        <li>Title capitalization is title case
+          <ul>
+            <li>Subtitle capitalization is title case</li>
+          </ul>
+        </li>
+        <li>Subtitle capitalization is title case</li>
+        <li>Titles and subtitles should never have a period at the end</li>
+      </ul>
+    </article>
+  </slide>
 ---
 
 title: Agenda

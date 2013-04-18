@@ -87,16 +87,6 @@ SlideDeck.prototype.onDomLoaded_ = function(e) {
     }, false);
   }
 
-  // Note: this needs to come after addEventListeners_(), which adds a
-  // 'keydown' listener that this controller relies on.
-  // Also, no need to set this up if we're on mobile.
-  /*if (!Modernizr.touch) {
-    this.controller = new SlideController(this);
-    if (this.controller.isPopup) {
-      document.body.classList.add('popup');
-    }
-  }
-  */
 };
 
 /**
@@ -252,10 +242,6 @@ SlideDeck.prototype.loadConfig_ = function(config) {
 
   this.loadTheme_(settings.theme || []);
 
-  if (settings.favIcon) {
-    this.addFavIcon_(settings.favIcon);
-  }
-
   // Prettyprint. Default to on.
   if (!!!('usePrettify' in settings) || settings.usePrettify) {
     prettyPrint();
@@ -270,102 +256,7 @@ SlideDeck.prototype.loadConfig_ = function(config) {
     this.makeBuildLists_();
   }
 
-  if (settings.title) {
-    document.title = settings.title.replace(/<br\/?>/, ' ');
-    if (settings.eventTitle) {
-      document.title +=  ' - ' + settings.eventTitle;
-    }
-    document.querySelector('[data-config-title]').innerHTML = settings.title;
-  }
 
-  if (settings.subtitle) {
-    document.querySelector('[data-config-subtitle]').innerHTML = settings.subtitle;
-  }
-
-  if (this.config_.presenters) {
-    var presenters = this.config_.presenters;
-    var dataConfigContact = document.querySelector('[data-config-contact]');
-
-    var html = [];
-    if (presenters.length == 1) {
-      var p = presenters[0];
-
-      html = [p.name, p.company].join('<br>');
-
-      var gplus = p.gplus ? '<span>g+</span><a href="' + p.gplus +
-          '">' + p.gplus.replace(/https?:\/\//, '') + '</a>' : '';
-
-      var twitter = p.twitter ? '<span>twitter</span>' +
-          '<a href="http://twitter.com/' + p.twitter + '">' +
-          p.twitter + '</a>' : '';
-
-      var www = p.www ? '<span>www</span><a href="' + p.www +
-                        '">' + p.www.replace(/https?:\/\//, '') + '</a>' : '';
-
-      var github = p.github ? '<span>github</span><a href="' + p.github +
-          '">' + p.github.replace(/https?:\/\//, '') + '</a>' : '';
-
-      var html2 = [gplus, twitter, www, github].join('<br>');
-
-      if (dataConfigContact) {
-        dataConfigContact.innerHTML = html2;
-      }
-    } else {
-      for (var i = 0, p; p = presenters[i]; ++i) {
-        html.push(p.name + ' - ' + p.company);
-      }
-      html = html.join('<br>');
-      if (dataConfigContact) {
-        dataConfigContact.innerHTML = html;
-      }
-    }
-
-    var dataConfigPresenter = document.querySelector('[data-config-presenter]');
-    if (dataConfigPresenter) {
-      dataConfigPresenter.innerHTML = html;
-      if (settings.eventTitle) {
-        dataConfigPresenter.innerHTML = dataConfigPresenter.innerHTML + '<br>' +
-                                        settings.eventTitle;
-      }
-    }
-  }
-
-  /* Left/Right tap areas. Default to including. */
-/*  if (!!!('enableSlideAreas' in settings) || settings.enableSlideAreas) {
-    var el = document.createElement('div');
-    el.classList.add('slide-area');
-    el.id = 'prev-slide-area';
-    el.addEventListener('click', this.prevSlide.bind(this), false);
-    this.container.appendChild(el);
-
-    var el = document.createElement('div');
-    el.classList.add('slide-area');
-    el.id = 'next-slide-area';
-    el.addEventListener('click', this.nextSlide.bind(this), false);
-    this.container.appendChild(el);
-  }
-*/
-/*  if (Modernizr.touch && (!!!('enableTouch' in settings) ||
-      settings.enableTouch)) {
-    var self = this;
-
-    // Note: this prevents mobile zoom in/out but prevents iOS from doing
-    // it's crazy scroll over effect and disaligning the slides.
-    window.addEventListener('touchstart', function(e) {
-      e.preventDefault();
-    }, false);
-
-    var hammer = new Hammer(this.container);
-    hammer.ondragend = function(e) {
-      if (e.direction == 'right' || e.direction == 'down') {
-        self.prevSlide();
-      } else if (e.direction == 'left' || e.direction == 'up') {
-        self.nextSlide();
-      }
-    };
-    * 
-  }
-  */
 };
 
 /**
@@ -520,12 +411,6 @@ SlideDeck.prototype.updateSlides_ = function(opt_dontPush) {
   this.triggerSlideEvent('slideleave', this.prevSlide_);
   this.triggerSlideEvent('slideenter', curSlide);
 
-// window.setTimeout(this.disableSlideFrames_.bind(this, curSlide - 2), 301);
-// 
-// this.enableSlideFrames_(curSlide - 1); // Previous slide.
-// this.enableSlideFrames_(curSlide + 1); // Current slide.
-// this.enableSlideFrames_(curSlide + 2); // Next slide.
-
    // Enable current slide's iframes (needed for page loat at current slide).
    this.enableSlideFrames_(curSlide + 1);
 
@@ -665,18 +550,6 @@ SlideDeck.prototype.updateHash_ = function(dontPush) {
   }
 };
 
-
-/**
- * @private
- * @param {string} favIcon
- */
-SlideDeck.prototype.addFavIcon_ = function(favIcon) {
-  var el = document.createElement('link');
-  el.rel = 'icon';
-  el.type = 'image/png';
-  el.href = favIcon;
-  document.querySelector('head').appendChild(el);
-};
 
 /**
  * @private
