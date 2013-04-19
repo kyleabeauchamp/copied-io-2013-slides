@@ -28,3 +28,14 @@ title: Check this out $\pi$
 class: big
 
 Testing $\alpha$
+
+---
+title: 
+class: raw
+
+<hgroup>
+<h2>Slide with Iframe</h2>
+</hgroup>
+<article>
+<iframe data-src="http://nbviewer.ipython.org/urls/raw.github.com/kyleabeauchamp/FitEnsemble/master/tutorial/Tutorial1.ipynb"></iframe>
+</article>

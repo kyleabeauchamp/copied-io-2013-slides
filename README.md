@@ -9,7 +9,7 @@ My changes were done with the intention of making these slides into something us
  - Removed all mobile device features
  - Focus *only* on editing markdown files
  - Move *all* slide information (including title + authors) into the markdown file.
- - Enable the use of "raw" type slides, where the user inserts raw HTML for totally custom look
+ - Enable the use of "raw" type slides, where the user inserts raw HTML for totally custom look.  Note: this is currently whitespace-sensitive.
  - Enable the use of mathJax for equation typesetting.  This requires you to install the mathjax markdown plugin:
  
  https://github.com/mayoff/python-markdown-mathjax
