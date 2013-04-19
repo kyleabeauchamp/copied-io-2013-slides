@@ -17,49 +17,13 @@ My changes were done with the intention of making these slides into something us
  I found that I had to rename their python extension as `mathjax.py` to get
  things to work properly.  
 
+## Compiling slides
 
-### Customizing the `#io12` hash
+Go to `scripts/md/`
 
-The bottom of the slides include `#io12` by default. If you'd like to change
-this, please update the variable `$social-tags: '#io12';` in
-[`/theme/scss/default.scss`](theme/scss/default.scss).
-
-See the next section on "Editing CSS" before you go editing things.
-
-## Editing CSS
-
-[Compass](http://compass-style.org/install/) is a CSS preprocessor used to compile
-SCSS/SASS into CSS. We chose SCSS for the new slide deck for maintainability,
-easier browser compatibility, and because...it's the future!
-
-That said, if not comfortable working with SCSS or don't want to learn something
-new, not a problem. The generated .css files can already be found in
-(see [`/theme/css`](theme/css)). You can just edit those and bypass SCSS altogether.
-However, our recommendation is to use Compass. It's super easy to install and use.
-
-### Installing Compass and making changes
-
-First, install compass:
-
-    sudo gem update --system
-    sudo gem install compass
-
-Next, you'll want to watch for changes to the exiting .scss files in [`/theme/scss`](theme/scss)
-and any new one you add:
-
-    $ cd io-2012-slides
-    $ compass watch
-
-This command automatically recompiles the .scss file when you make a change.
-Its corresponding .css file is output to [`/theme/css`](theme/css). Slick.
-
-By default, [`config.rb`](config.rb) in the main project folder outputs minified
-.css. It's a best practice after all! However, if you want unminified files,
-run watch with the style output flag:
-
-    compass watch -s expanded
-
-*Note:* You should not need to edit [`_base.scss`](theme/scss/_base.scss).
+    $./render.py slides.md ../../out.html --extensions mathjax
+    
+There are currently pathing issues, so some of the paths are kinda hardcoded.
 
 ## Running the slides
 
@@ -90,4 +54,39 @@ Presenter mode is sticky, so refreshing the page will persist your settings.
 
 ---
 
-That's all she wrote!
+### Editing the CSS / SCSS templates
+
+First, install compass:
+
+    sudo gem update --system
+    sudo gem install compass
+
+Next, you'll want to watch for changes to the exiting .scss files in [`/theme/scss`](theme/scss)
+and any new one you add:
+
+    $ cd io-2012-slides
+    $ compass watch
+
+This command automatically recompiles the .scss file when you make a change.
+Its corresponding .css file is output to [`/theme/css`](theme/css). Slick.
+
+By default, [`config.rb`](config.rb) in the main project folder outputs minified
+.css. It's a best practice after all! However, if you want unminified files,
+run watch with the style output flag:
+
+    compass watch -s expanded
+
+*Note:* You should not need to edit [`_base.scss`](theme/scss/_base.scss).
+
+
+## Editing CSS
+
+[Compass](http://compass-style.org/install/) is a CSS preprocessor used to compile
+SCSS/SASS into CSS. We chose SCSS for the new slide deck for maintainability,
+easier browser compatibility, and because...it's the future!
+
+That said, if not comfortable working with SCSS or don't want to learn something
+new, not a problem. The generated .css files can already be found in
+(see [`/theme/css`](theme/css)). You can just edit those and bypass SCSS altogether.
+However, our recommendation is to use Compass. It's super easy to install and use.
+
