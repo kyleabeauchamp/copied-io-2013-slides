@@ -1,6 +1,14 @@
-My own personal modifications of the Google IO 2013 HTML slideshow project.
+## What have you done to the Google slides?!
+
+I've taken the liberty of heavily modifying the IO 2013 slides:
 
 https://code.google.com/p/io-2013-slides/
+
+My changes were done with the intention of making these slides into something useful for giving scientific talks.  
+
+ - Removed all mobile device features
+ - Focus *only* on editing markdown files
+ - Move *all* slide information (including title + authors) into the markdown file.
 
 ## Configuring the slides
 
