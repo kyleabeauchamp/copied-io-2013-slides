@@ -21,7 +21,7 @@ MathJax.Hub.Config({
 </script>
 
 <head>
-  <title>Google IO 2012</title>
+  <title>Slideshow</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <link rel="stylesheet" media="all" href="theme/css/default.css">
@@ -36,6 +36,12 @@ MathJax.Hub.Config({
 <slide {% if slide.class %}class="{{- slide.class -}}"{% endif %} {% if slide.image %}style="background-image: url({{- slide.image -}})"{% endif %}>
   {% if 'raw' in slide.class %}
     {{- slide.content -}}
+  {% elif 'title' in slide.class %}
+    <hgroup>
+      <h1>{{- slide.title -}}</h1>
+      <h2>{{- slide.subtitle -}}</h2>
+      <p>{{- slide.content -}}</p>
+    </hgroup>
   {% else %}
     <hgroup>
       <h2>{{- slide.title -}}</h2>

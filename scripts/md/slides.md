@@ -39,3 +39,18 @@ class: raw
 <article>
 <iframe data-src="http://nbviewer.ipython.org/urls/raw.github.com/kyleabeauchamp/FitEnsemble/master/tutorial/Tutorial1.ipynb"></iframe>
 </article>
+
+
+---
+title: Testing video
+class: big
+
+
+---
+
+  <slide class="fill nobackground" style="background-image: url(images/sky.jpg)">
+    <hgroup>
+      <h2 class="white">Full Image (with Optional Header)</h2>
+    </hgroup>
+    <footer class="source white">www.flickr.com/photos/25797459@N06/5438799763/</footer>
+  </slide>

@@ -1,0 +1,227 @@
+<!--
+Google IO 2012 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahe <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" src="path-to-mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<head>
+  <title>Slideshow</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+
+<slide class="title-slide segue nobackground" >
+  
+    <hgroup>
+      <h1>Why Folding is Easy: MSMs for Protein Conformation Change</h1>
+      <h2></h2>
+      <p><p>Robert T. McGibbon</p>
+<p>April 22, 2013</p></p>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Background</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>Markov state modes are great.</li>
+<li>You can model protein dynamics and stuff.</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Plan of Attack</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>Resolving conformation slow conformation changes within a folding data set.</li>
+<li>Manual parameter selection</li>
+<li>Statistical over fitting</li>
+<li>Adaptive sampling</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>MSM Parameter Selection</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>MSM construction is a mix of supervised and unsupervised learning problems.</li>
+<li>Unsupervised learning is the problem of finding "hidden" structure in unlabeled data, where there's no <em>right</em> answer.</li>
+<li>How many conformational states does a protein adopt? The answer is in the eye of the beholder.</li>
+<li>Parameterizing a transition matrix is supervised.</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>MSM State Decomposition</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>The MSM state decomposition, <em>clustering</em>, is characterized by a bias-variance trade off.</p>
+<ul class="build">
+<li><strong>Bias:</strong> As you lower the number of states, you introduce systematic error in modeling the dynamics.</li>
+<li>Hamiltonian dynamics are completely Markovian in $\mathbb{R}^{6N}$</li>
+<li><strong>Variance:</strong> As you raise the number of states, you're increasing subject to statistical noise in the transition matrix estimation.</li>
+<li>How do we balance this trade off?</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Choosing the states' shape</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p><img height=300 src=figures/gpcr_activation.png /></p>
+<ul class="build">
+<li>Conformational change is characterized by slow <em>conformationally subtle</em> transitions.</li>
+<li>To resolve these transitions in our models, our states need to be "smaller" than the spatial extent of the process.</li>
+<li>Increasing the number of states is not the <em>only</em> way to lower the bias -- we can also pick the <strong>shape</strong> of our states more intelligently.</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Protein motions aren't isotropic</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Our MSM states shouldn't be either</p>
+<p><img height=300 src=figures/gpcr_activation.png /></p>
+<ul class="build">
+<li>Goal: to learn a distance metric for clustering which maximally separates kinetically close and kinetically distant conformations.</li>
+<li>Different structural degrees of freedom should be weighted according to their discrimitory power (equilibration rate).</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Large-Margin Learning</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p><img height=250 src="figures/classifiers.png"><span style="padding:1em;"></span><img height=250 src="figures/classifiers2.png"></p>
+<ul class="build">
+<li>A common goal in supervised learning is to construct binary classifiers.</li>
+<li>Examples: actives vs. inactives, cats vs. others.</li>
+<li>The "margin" is the distance of the object's score from the the decision threshold.</li>
+<li>Large margin approaches attempt to find a classifier via optimization methods that maximize the (avg) margins.</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Large-Margin Distance Metric</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Consider a set of $N$ triplets of structres, $(a, b, c)$, such that $a$ and $b$ appear close together in a single trajectory, while $a$ and $c$ do not.</li>
+<li>We restrict our attention to the set of squared Mahalanobis metrics.</li>
+<li>And maximize the margin of separation between the close and far pairs.
+$$ d^{\mathbf{X}}(\vec{a}, \vec{b}) = (\vec{a} - \vec{b})^{T} \mathbf{X} (\vec{a} - \vec{b}) \
+  \max_{\mathbf{X},\rho} \left[ \alpha \rho - \frac{1}{N} \sum_i^N \lambda \left(d^\mathbf{X}(\vec{a}_i,\vec{c}_i) - d^\mathbf{X}(\vec{a}_i, \vec{b}_i) - \rho \right) \right]
+  $$</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Optimization and Constraints</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>$$ \max_{\mathbf{X},\rho} \left[ \alpha \rho - \frac{1}{N} \sum_i^N \lambda \left(d^\mathbf{X}(\vec{a}_i,\vec{c}_i) - d^\mathbf{X}(\vec{a}_i, \vec{b}_i) - \rho \right) \right] $$</p>
+<ul>
+<li>The matrix $\mathbf{X}$ is constrained to be positive semidefinite.</li>
+<li>Optimized by a gradient descent algorithm with rank-1 updates.</li>
+<li>Shen, C.; Kim, J.; Wang, L. Scalable large-margin Mahalanobis distance metric learning. <em>IEEE</em> <em>Trans.</em> <em>Neural</em> <em>Networks</em> <strong>2010</strong>, 21, 1524–1530</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Model System</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p><img height=250 src="paper_figures/microstates_unweighted.png"><img height=250 src="paper_figures/microstates_kdml.png"></p>
+<ul>
+    <li> Two dimensional Brownian dynamics, where the diffusion constant in the $y$ direction is 10 times greather than the diffusion constant in the $x$ direction.
+    </li>
+    <li> <div style="margin-left:150px;"> $\mathbf{X} = \begin{pmatrix} 0.9915 & 0.0 \\  0.0 & 0.0085 \end{pmatrix}$ </div>
+    </li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Model System</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p><img height=500 src="paper_figures/timescales.png"></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>MSMAccelerator</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><video height=350 controls> <source src="figures/movie.ogv" type="video/ogg"> </video></article>
+ 
+</slide>
+
+
+
+<slide class="backdrop"></slide>
+
+</slides>
+
+</body>
+</html>
