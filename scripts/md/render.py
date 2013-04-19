@@ -18,7 +18,7 @@ def process_slides(md_filename, html_filename, extensions = []):
     html_filename : str
         Filename of ouput HTML file.
     extensions : list, optional
-        List of markdown extensions to use.  e.g. ['latex']
+        List of markdown extensions to use.  e.g. ['mathjax']
     """
     with codecs.open(html_filename, 'w', encoding='utf8') as outfile:
         md = codecs.open(md_filename, encoding='utf8').read()
@@ -37,7 +37,7 @@ def process_slides(md_filename, html_filename, extensions = []):
             remainder_index = metadata and 1 or 0
             # Get the content from the rest of the slide.
             content_section = '\n\n'.join(sections[remainder_index:])
-            html = markdown.markdown(content_section,extensions=extensions)
+            html = markdown.markdown(content_section, extensions=extensions)
             slide['content'] = postprocess_html(html, metadata)
 
             slides.append(slide)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     parser.add_argument('md_filename', metavar='m', type=str, help='Filename for markdown input.')
     parser.add_argument('html_filename', metavar='o', type=str, help='Filename for HTML output.')
-    parser.add_argument('--extensions', metavar='e', type=str, help='List of extensions needed for compilation.  e. g. "latex"', default=[], nargs="*")
+    parser.add_argument('--extensions', metavar='e', type=str, help='List of extensions needed for compilation.  e. g. "mathjax"', default=[], nargs="*")
 
     args = parser.parse_args()
     process_slides(args.md_filename, args.html_filename, args.extensions)

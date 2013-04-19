@@ -77,11 +77,6 @@ SlideController.prototype.onMessage_ = function(e) {
     return;
   }
 
-  // if (e.source.location.hostname != 'localhost') {
-  //   alert('Someone tried to postMessage from an unknown origin');
-  //   return;
-  // }
-
   if ('keyCode' in data) {
     var evt = document.createEvent('Event');
     evt.initEvent('keydown', true, true);
@@ -91,11 +86,6 @@ SlideController.prototype.onMessage_ = function(e) {
 };
 
 SlideController.prototype.sendMsg = function(msg) {
-  // // Send message to popup window.
-  // if (this.popup) {
-  //   this.popup.postMessage(msg, ORIGIN_);
-  // }
-
   // Send message to main window.
   if (this.isPopup) {
     // TODO: It would be dope if FF implemented location.origin.

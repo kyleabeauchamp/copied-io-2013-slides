@@ -9,13 +9,14 @@ My changes were done with the intention of making these slides into something us
  - Removed all mobile device features
  - Focus *only* on editing markdown files
  - Move *all* slide information (including title + authors) into the markdown file.
+ - Enable the use of "raw" type slides, where the user inserts raw HTML for totally custom look
+ - Enable the use of mathJax for equation typesetting.  This requires you to install the mathjax markdown plugin:
+ 
+ https://github.com/mayoff/python-markdown-mathjax
+ 
+ I found that I had to rename their python extension as `mathjax.py` to get
+ things to work properly.  
 
-## Configuring the slides
-
-Much of the deck is customized by changing the settings in [`slide_config.js`](slide_config.js).
-Some of the customizations include the title, Analytics tracking ID, speaker
-information (name, social urls, blog), web fonts to load, themes, and other
-general behavior.
 
 ### Customizing the `#io12` hash
 
